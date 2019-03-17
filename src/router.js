@@ -7,6 +7,7 @@ import Login from './components/Login.vue'
 import Secure from './components/Secure.vue'
 import Register from './components/Register.vue'
 import NewProcess from './components/NewProcess.vue'
+import Records from './components/Records.vue'
 
 Vue.use(Router)
 
@@ -40,6 +41,14 @@ let router = new Router({
       path: '/new',
       name: 'newprocess',
       component: NewProcess,
+      meta: { 
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/records',
+      name: 'records',
+      component: Records,
       meta: { 
         requiresAuth: true
       }
