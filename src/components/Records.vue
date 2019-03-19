@@ -1,6 +1,6 @@
 <template>
-    <div class="container">
-        <table class="table table-bordered">
+    <div class="table-responsive">
+        <table class="table-hover" v-if="data">
             <thead>
                 <tr>
                     <th>Process ID</th>
@@ -12,9 +12,17 @@
                     <th>User ID</th>
                 </tr>    
             </thead>   
-            <tr v-for="process in processes">
-                <td v-for="proc in process"> {{ proc }} </td>
-            </tr>
+            <tbody>
+                <tr v-for="item in data">
+                    <td><a href="http://10.3.141.1:8023/data/$item.process_id">{{ item.process_id }}</a></td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.set_temp }}</td>
+                    <td>{{ item.cook_time }}</td>
+                    <td>{{ item.read_int }}</td>
+                    <td>{{ item.time_stamp }}</td>
+                    <td>{{ item.user_id }}</td>
+                </tr>
+            </tbody>
         </table>    
     </div>    
 </template>
@@ -25,13 +33,14 @@ import axios from 'axios';
 export default {
     data () {
         return {
-            processes: ''
+            data: null
         }
     },
     created () {
         axios({url: 'http://10.3.141.1:8023/process', headers: {'x-access-token': localStorage.getItem('token')}, method: 'GET' }).then(response => {
-            this.processes = response.data
-            console.log(this.processes)
+            return response.data;
+        }).then(jsonData => {
+            this.data = jsonData;
         }).catch(function(error){
             console.log(error)
         })
