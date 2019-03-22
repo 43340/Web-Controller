@@ -8,6 +8,7 @@ import Secure from './components/Secure.vue'
 import Register from './components/Register.vue'
 import NewProcess from './components/NewProcess.vue'
 import Records from './components/Records.vue'
+import Current from './components/Current.vue'
 
 Vue.use(Router)
 
@@ -49,6 +50,14 @@ let router = new Router({
       path: '/records',
       name: 'records',
       component: Records,
+      meta: { 
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/current',
+      name: 'current',
+      component: Current,
       meta: { 
         requiresAuth: true
       }
