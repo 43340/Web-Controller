@@ -9,6 +9,7 @@ import Register from './components/Register.vue'
 import NewProcess from './components/NewProcess.vue'
 import Records from './components/Records.vue'
 import Current from './components/Current.vue'
+import Detail from './components/Details.vue'
 
 Vue.use(Router)
 
@@ -58,6 +59,14 @@ let router = new Router({
       path: '/current',
       name: 'current',
       component: Current,
+      meta: { 
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/detail/:id',
+      name: 'detail',
+      component: Detail,
       meta: { 
         requiresAuth: true
       }

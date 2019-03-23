@@ -13,7 +13,7 @@
             </thead>   
             <tbody>
                 <tr v-for="item, i in data">
-                    <td class="pname"><a v-bind:href="'http://10.3.141.1:8023/data/' + item.process_id">{{ item.name }}</a></td>
+                    <td class="pname"><router-link :to="{ name: 'detail', params: { id: item.process_id } }">{{ item.name }}</router-link></td>
                     <td class="stemp">{{ item.set_temp }}</td>
                     <td class="ctime">{{ item.cook_time }}</td>
                     <td class="rinte">{{ item.read_int }}</td>
