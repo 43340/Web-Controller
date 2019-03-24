@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <!-- <div id="app">
     <div id="nav">
       <ul>
         <li><router-link to="/">Home</router-link></li>
@@ -21,7 +21,25 @@
     <footer>
       Made with <span class="heart">❤</span> by heeho
     </footer>
-  </div>
+  </div> -->
+  <v-app>
+    <v-toolbar
+      color="#42b983"
+      dark
+    >
+      <v-toolbar-title>Tray Dryer Controller</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn flat @click="goToRoute('/')"><span><router-link to="/">Home</router-link></span></v-btn>
+        <v-btn flat @click="goToRoute('/new')"><span><router-link to="/new">New</router-link></span></v-btn>
+        <v-btn flat @click="goToRoute('/current')"><span><router-link to="/current">Current</router-link></span></v-btn>
+        <v-btn flat @click="goToRoute('/records')"><span><router-link to="/records">Records</router-link></span></v-btn>
+        <v-btn v-if="!isLoggedIn" flat @click="goToRoute('/login')"><span><router-link to="/login">Login</router-link></span></v-btn>
+        <v-btn v-if="isLoggedIn" flat @click="logout"><span><a>Logout</a></span></v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
+    <router-view/>
+  </v-app>
 </template>
 <script>
 export default {
@@ -39,6 +57,9 @@ export default {
       this.$store.dispatch("logout").then(() => {
         this.$router.push("/login");
       });
+    },
+    goToRoute(r) {
+      this.$router.push(r);
     }
   },
   created: function() {
@@ -72,22 +93,22 @@ export default {
   height: 80dp;
 }
 
-#nav a {
+span a {
   font-weight: bold;
   color: #2c3e50;
   cursor: pointer;
+  text-decoration: none;
+}
+
+a:hover {
   text-decoration: underline;
 }
 
-#nav a:hover {
-  text-decoration: underline;
-}
-
-#nav a.router-link-exact-active {
+a.router-link-exact-active {
   color: white;
 }
 
-#nav a {
+a {
   text-decoration: none;
 }
 

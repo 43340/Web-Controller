@@ -1,5 +1,6 @@
 <template>
-    <div id="body">
+    <div>
+        <h1>Records</h1>
         <div class="table-responsive">
             <table class="table-hover" v-if="data">
                 <thead>

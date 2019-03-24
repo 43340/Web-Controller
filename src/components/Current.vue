@@ -1,12 +1,15 @@
 <template>
-    <div v-if="timeLeft === '0:00:00' || timeLeft === '' || stopped === 'true'">
-        <button v-on:click="startNew()">Start New</button>
-    </div>
-    <div v-else>
-        <p>Temperature: {{ temp }}</p>
-        <p>Humidity: {{ hum }}</p>
-        <p>Time left: {{ timeLeft }}</p>
-        <button v-on:click="stopProcess()">Stop</button>
+    <div>
+        <h1>Current</h1>
+        <div v-if="timeLeft === '0:00:00' || timeLeft === '' || stopped === 'true'">
+            <button v-on:click="startNew()">Start New</button>
+        </div>
+        <div v-else>
+            <p>Temperature: {{ temp }}</p>
+            <p>Humidity: {{ hum }}</p>
+            <p>Time left: {{ timeLeft }}</p>
+            <button v-on:click="stopProcess()">Stop</button>
+        </div>
     </div>
 </template>
 
