@@ -1,30 +1,32 @@
 <template>
-    <div class="table-responsive">
-        <table class="table-hover" v-if="data">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Set Temperature</th>
-                    <th>Cook Time</th>
-                    <th>Read Interval</th>
-                    <th>Time Started</th>
-                    <th>Action</th>
-                </tr>    
-            </thead>   
-            <tbody>
-                <tr v-for="item, i in data">
-                    <td class="pname"><router-link :to="{ name: 'detail', params: { id: item.process_id } }">{{ item.name }}</router-link></td>
-                    <td class="stemp">{{ item.set_temp }}</td>
-                    <td class="ctime">{{ item.cook_time }}</td>
-                    <td class="rinte">{{ item.read_int }}</td>
-                    <td class="stime">{{ item.time_stamp }}</td>
-                    <td class="delete">
-                        <button v-on:click="deleteEntry(item.process_id, i)">x</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>    
-    </div>    
+    <div id="body">
+        <div class="table-responsive">
+            <table class="table-hover" v-if="data">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Set Temperature</th>
+                        <th>Cook Time</th>
+                        <th>Read Interval</th>
+                        <th>Time Started</th>
+                        <th>Action</th>
+                    </tr>    
+                </thead>   
+                <tbody>
+                    <tr v-for="item, i in data">
+                        <td class="pname"><router-link :to="{ name: 'detail', params: { id: item.process_id } }">{{ item.name }}</router-link></td>
+                        <td class="stemp">{{ item.set_temp }}</td>
+                        <td class="ctime">{{ item.cook_time }}</td>
+                        <td class="rinte">{{ item.read_int }}</td>
+                        <td class="stime">{{ item.time_stamp }}</td>
+                        <td class="delete">
+                            <button v-on:click="deleteEntry(item.process_id, i)">x</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>    
+        </div>    
+    </div>
 </template>
 
 <script>
