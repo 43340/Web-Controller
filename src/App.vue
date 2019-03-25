@@ -38,7 +38,12 @@
         <v-btn v-if="isLoggedIn" flat @click="logout"><span><a>Logout</a></span></v-btn>
       </v-toolbar-items>
     </v-toolbar>
-    <router-view/>
+    <v-content>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-content>
+    <v-footer app></v-footer>
   </v-app>
 </template>
 <script>

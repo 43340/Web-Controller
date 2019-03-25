@@ -1,23 +1,55 @@
 <template>
- <div>
-   <form class="login" @submit.prevent="login">
-     <h1>Sign in</h1>
-     <label>Email</label>
-     <input required v-model="username" type="text" placeholder="Name"/>
-     <label>Password</label>
-     <input required v-model="password" type="password" placeholder="Password"/>
-     <hr/>
-     <button type="submit">Login</button>
-   </form>
- </div>
+ <v-form
+    ref="form"
+    lazy-validation
+  >
+		<v-container fill-height>
+      <v-layout row wrap align-center>
+
+        <v-flex xs12 sm6>
+          <v-text-field
+						v-model="username"
+						label="Username"
+						:rules="[rules.required]"
+						required
+						outline
+    			></v-text-field>
+        </v-flex>
+
+        <v-flex xs12 sm6>
+          <v-text-field
+						v-model="password"
+            type='password'
+						label="Password"
+						:rules="[rules.required]"
+						required
+						outline
+						@click:append="show1 = !show1"
+					></v-text-field>
+        </v-flex>
+
+      </v-layout>
+    </v-container>
+
+    <v-btn
+      color="success"
+      @click="login"
+    >
+      Login
+    </v-btn>
+  </v-form>
 </template>
+
 <script>
 	export default {
 		data(){
 			return {
 				username : "",
-        password : ""
-            }
+				password : "",
+				rules: {
+					required: value => !!value || 'Required.'
+				}
+      }
 		},
 		methods: {
 		 	login: function () {
