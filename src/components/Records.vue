@@ -1,5 +1,5 @@
 <template>
-    <div>
+  <!-- <div>
         <h1>Records</h1>
         <div class="table-responsive">
             <table class="table-hover" v-if="data">
@@ -27,70 +27,110 @@
                 </tbody>
             </table>    
         </div>    
-    </div>
+  </div>-->
+  <div>
+    <v-toolbar flat color="white">
+      <v-toolbar-title>Records</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-toolbar>
+
+    <v-data-table :items="data" :headers="headers" :search="search" class="elevation-1" hide-actions>
+      <template slot="headers" slot-scope="props">
+        <th v-for="column in headers">{{ column.text }}</th>
+      </template>
+
+      <template slot="items" slot-scope="props">
+        <td class="text-xs-left" @click="openDetails(props.item.process_id)">{{ props.item.name }}</td>
+        <td
+          class="text-xs-right"
+          @click="openDetails(props.item.process_id)"
+        >{{ props.item.set_temp }}</td>
+        <td
+          class="text-xs-right"
+          @click="openDetails(props.item.process_id)"
+        >{{ props.item.cook_time }}</td>
+        <td
+          class="text-xs-right"
+          @click="openDetails(props.item.process_id)"
+        >{{ props.item.read_int }}</td>
+        <td>{{ props.item.time_stamp }}</td>
+        <td class="delete">
+          <v-icon small @click="deleteEntry(props.item, props.item.process_id)">delete</v-icon>
+        </td>
+      </template>
+      <v-alert v-slot:no-results :value="true" color="error" icon="warning">
+        Your search for "{{ search }}" found no results.
+      </v-alert>
+    </v-data-table>
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
-    data () {
-        return {
-            data: []
-        }
-    },
-    mounted () {
-        axios({url: 'http://10.3.141.1:8023/process', headers: {'x-access-token': localStorage.getItem('token')}, method: 'GET' }).then(response => {
-            return response.data;
-        }).then(jsonData => {
-            this.data = jsonData;
-        }).catch(function(error){
-            console.log(error)
+  data() {
+    return {
+        search: '',
+      headers: [
+        {
+          text: "Name",
+          align: "left",
+          sortable: false,
+          value: "name"
+        },
+        { text: "Set Temperature", sortable: false,value: "set_temp" },
+        { text: "Set Time", sortable: false,value: "cook_time" },
+        { text: "Read Interval", sortable: false,value: "read_int" },
+        { text: "Time", value: "time_stamp" },
+        { text: "Actions", value: "name", sortable: false }
+      ],
+      data: []
+    };
+  },
+  created() {
+    axios({
+      url: "http://10.3.141.1:8023/process",
+      headers: { "x-access-token": localStorage.getItem("token") },
+      method: "GET"
+    })
+      .then(response => {
+        return response.data;
+      })
+      .then(jsonData => {
+        this.data = jsonData;
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+  methods: {
+    deleteEntry(item, id) {
+      axios({
+        url: "http://10.3.141.1:8023/process/" + id,
+        headers: { "x-access-token": localStorage.getItem("token") },
+        method: "DELETE"
+      })
+        .then(() => {
+          const index = this.data.indexOf(item)
+          console.log(index)
+          confirm("Are you sure you want to delete this item?") && this.data.splice(index, 1);
+          console.log("Deleted");
         })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
-    methods: {
-        deleteEntry(id, i) {
-            axios({url: 'http://10.3.141.1:8023/process/' + id, headers: {'x-access-token': localStorage.getItem('token')}, method: 'DELETE' }).then(() => {
-                console.log("Deleted")
-                this.data.splice(i, 1);
-            }).catch(function(error){
-                console.log(error)
-            })
-        }
+    openDetails(pid) {
+      this.$router.push(`/detail/${pid}`);
     }
-}
+  }
+};
 </script>
-
-<style>
-ul{
-    list-style: none;
-}
-
-li{
-    display: inline;
-}
-
-table{
-    border-collapse: collapse;
-}
-
-table, th, td{
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid #2c3e50;
-}
-
-th, td{
-    padding-left : 15px;
-    padding-right : 15px;
-    padding-bottom: 2px;
-}
-
-td.pname{
-    text-align: left;
-}
-
-td.stemp, td.ctime, td.rinte, td.stime{
-    text-align: center;
-}
-</style>

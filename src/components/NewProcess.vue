@@ -88,7 +88,7 @@ export default {
       };
       this.$store
         .dispatch("newProcess", data)
-        .then(() => this.$router.push("/"))
+        .then(() => this.$router.push("/current"))
         .catch(err => console.log(err));
     }
   },
