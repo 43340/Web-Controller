@@ -9,7 +9,7 @@ export default new Vuex.Store({
   		status: '',
   		token: localStorage.getItem('token') || '',
 		user : {},
-		admin: localStorage.getItem('admin') || false,
+		admin: localStorage.getItem('admin') || '',
 	},
 	mutations: {
 		auth_request(state){
@@ -41,10 +41,12 @@ export default new Vuex.Store({
 				}).then(resp => {
 	                const token = resp.data.token
 					const user = resp.data.user
-					const admin = resp.data.admin
+					// const admin = resp.data.admin
+					const admin = resp.data.admin ? 'admin' : ''
 					console.log(resp.data)
 					localStorage.setItem('token', token)
 					localStorage.setItem('admin', admin)
+
 	                // Add the following line:
 	                axios.defaults.headers.common['Authorization'] = token
 	                commit('auth_success', token, user, admin)

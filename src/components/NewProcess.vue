@@ -12,6 +12,7 @@
             :rules="[rules.required]"
 						label="Name"
 						required
+            autofocus
 						outline
     			></v-text-field>
         </v-flex>
@@ -19,7 +20,7 @@
         <v-flex xs12 sm6>
           <v-text-field
 						v-model.number="stemp"
-            :rules="[rules.required, rules.numbers]"
+            :rules="[rules.numbers]"
 						label="Set Temperature"
             type="number"
 						required
@@ -30,7 +31,7 @@
         <v-flex xs12 sm6>
           <v-text-field
 						v-model.number="ctime"
-            :rules="[rules.required, rules.numbers]"
+            :rules="[rules.numbers]"
 						label="Time"
             type="number"
 						required
@@ -41,7 +42,7 @@
         <v-flex xs12 sm6>
           <v-text-field
 						v-model.number="rinte"
-            :rules="[rules.required, rules.numbers]"
+            :rules="[rules.numbers]"
 						label="Read Interval"
             type="number"
 						required
@@ -70,10 +71,10 @@ export default {
       ctime: '',
       rinte: '',
       rules: {
-        required: value => !!value || 'Invalid input.',
+        required: value => !!value || 'Required.',
         numbers: value => {
           const pattern = /^([+-]?[1-9]\d*|0)$/
-          return pattern.test(value) || 'Invalid input. Numbers only'
+          return pattern.test(value) || 'Required. Numbers only'
         }
       }
     };

@@ -22,6 +22,13 @@
       <v-toolbar-title>Details</v-toolbar-title>
     </v-toolbar>
 
+    <chartist
+        ratio="ct-minor-seventh"
+        type="Line"
+        :data="chartData"
+        :options="chartOptions" >
+    </chartist>
+
     <v-data-table
       :items="data"
       :headers="headers"
@@ -55,7 +62,22 @@ export default {
         { text: "Temperature", sortable: false, value: "temp" },
         { text: "Humidity", sortable: false, value: "hum" },
       ],
-      data: []
+      data: [],
+      chartData: {
+            labels: [],
+            series: [],
+        },
+        chartOptions: {
+            lineSmooth: false,
+            fullWidth: true,
+            axisX: {
+              labelInterpolationFnc: function (value, index) {        
+     
+              return index % 10 == 0 ? value: null;
+      }
+
+            }
+        }
     };
   },
   created() {
@@ -69,10 +91,24 @@ export default {
       })
       .then(jsonData => {
         this.data = jsonData;
+        var t = []
+        var h = []
+        jsonData.forEach(element => {
+          this.chartData.labels.push(element.time_stamp)
+          t.push(element.temp)
+          h.push(element.hum)
+        });
+        this.chartData.series.push(t, h)
+        // console.log(this.chartData.series)
       })
       .catch(function(error) {
         console.log(error);
       });
-  }
+  },
 };
 </script>
+
+<style lang="scss">
+  @import "chartist/dist/scss/chartist.scss";
+</style>
+

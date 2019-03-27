@@ -35,6 +35,7 @@
         <v-btn flat @click="goToRoute('/current')"><span><router-link to="/current">Current</router-link></span></v-btn>
         <v-btn flat @click="goToRoute('/records')"><span><router-link to="/records">Records</router-link></span></v-btn>
         <v-btn v-if="!isLoggedIn" flat @click="goToRoute('/login')"><span><router-link to="/login">Login</router-link></span></v-btn>
+        <v-btn v-if="isLoggedIn && isAdmin" flat @click="goToRoute('/register')"><span><router-link to="/register">Add User</router-link></span></v-btn>
         <v-btn v-if="isLoggedIn" flat @click="logout"><span><a>Logout</a></span></v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -53,8 +54,8 @@ export default {
       return this.$store.getters.isLoggedIn;
     },
     isAdmin: function() {
-      console.log(localStorage.getItem('admin'))
-      return localStorage.getItem('admin');
+      console.log(this.$store.getters.isAdmin)
+      return this.$store.getters.isAdmin;
     }
   },
   methods: {

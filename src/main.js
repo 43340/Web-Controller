@@ -10,6 +10,7 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.use(Vuetify)
 Vue.use(Vuelidate)
+Vue.use(require('vue-chartist'))
 
 Vue.prototype.$http = Axios;
 

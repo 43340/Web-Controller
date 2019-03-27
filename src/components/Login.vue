@@ -56,7 +56,7 @@
 		   		let username = this.username 
 		   		let password = this.password
 		   		this.$store.dispatch('login', { username, password })
-		   		.then(() => this.$router.push('/'))
+		   		.then(() => this.$router.go('/'))
 		   		.catch(err => console.log(err))
 		   	}
 		}
