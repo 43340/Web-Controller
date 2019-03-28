@@ -87,6 +87,7 @@ export default {
       method: "GET"
     })
       .then(response => {
+        console.log(response.status)
         return response.data;
       })
       .then(jsonData => {
