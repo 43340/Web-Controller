@@ -24,7 +24,10 @@ let router = new Router({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      meta: { 
+        loggedOut: true
+      }
     },
     {
       path: '/register',
@@ -86,6 +89,18 @@ router.beforeEach((to, from, next) => {
       return
     }
     next('/login') 
+  } else {
+    next() 
+  }
+})
+
+router.beforeEach((to, from, next) => {
+  if(to.matched.some(record => record.meta.loggedOut)) {
+    if (!(store.getters.isLoggedIn)) {
+      next()
+      return
+    }
+    next('/') 
   } else {
     next() 
   }

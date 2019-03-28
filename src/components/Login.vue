@@ -53,12 +53,12 @@
 		},
 		methods: {
 		 	login: function () {
-		   		let username = this.username 
-		   		let password = this.password
-		   		this.$store.dispatch('login', { username, password })
-		   		.then(() => this.$router.go('/'))
-		   		.catch(err => console.log(err))
-		   	}
+				let username = this.username 
+				let password = this.password
+				this.$store.dispatch('login', { username, password })
+				.then(() => this.$router.go('/'))
+				.catch(err => console.log(err))
+			}
 		}
 	}
 </script>
