@@ -22,19 +22,9 @@
       <v-toolbar-title>Details</v-toolbar-title>
     </v-toolbar>
 
-    <chartist
-        ratio="ct-minor-seventh"
-        type="Line"
-        :data="chartData"
-        :options="chartOptions" >
-    </chartist>
+    <chartist ratio="ct-minor-seventh" type="Line" :data="chartData" :options="chartOptions"></chartist>
 
-    <v-data-table
-      :items="data"
-      :headers="headers"
-      class="elevation-1"
-      hide-actions
-    >
+    <v-data-table :items="data" :headers="headers" class="elevation-1" hide-actions>
       <template slot="headers" slot-scope="props">
         <th v-for="column in headers">{{ column.text }}</th>
       </template>
@@ -60,24 +50,22 @@ export default {
           value: "name"
         },
         { text: "Temperature", sortable: false, value: "temp" },
-        { text: "Humidity", sortable: false, value: "hum" },
+        { text: "Humidity", sortable: false, value: "hum" }
       ],
       data: [],
       chartData: {
-            labels: [],
-            series: [],
-        },
-        chartOptions: {
-            lineSmooth: false,
-            fullWidth: true,
-            axisX: {
-              labelInterpolationFnc: function (value, index) {        
-     
-              return index % 10 == 0 ? value: null;
-      }
-
-            }
+        labels: [],
+        series: []
+      },
+      chartOptions: {
+        lineSmooth: false,
+        fullWidth: true,
+        axisX: {
+          labelInterpolationFnc: function(value, index) {
+            return index % 10 == 0 ? value : null;
+          }
         }
+      }
     };
   },
   created() {
@@ -87,29 +75,29 @@ export default {
       method: "GET"
     })
       .then(response => {
-        console.log(response.status)
+        console.log(response.status);
         return response.data;
       })
       .then(jsonData => {
         this.data = jsonData;
-        var t = []
-        var h = []
+        var t = [];
+        var h = [];
         jsonData.forEach(element => {
-          this.chartData.labels.push(element.time_stamp)
-          t.push(element.temp)
-          h.push(element.hum)
+          this.chartData.labels.push(element.time_stamp);
+          t.push(element.temp);
+          h.push(element.hum);
         });
-        this.chartData.series.push(t, h)
+        this.chartData.series.push(t, h);
         // console.log(this.chartData.series)
       })
       .catch(function(error) {
         console.log(error);
       });
-  },
+  }
 };
 </script>
 
 <style lang="scss">
-  @import "chartist/dist/scss/chartist.scss";
+@import "chartist/dist/scss/chartist.scss";
 </style>
 

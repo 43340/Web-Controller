@@ -61,6 +61,7 @@
           @click="openDetails(props.item.process_id)"
         >{{ props.item.read_int }}</td>
         <td>{{ props.item.time_stamp }}</td>
+        <td>{{ props.item.user_id }}</td>
         <td class="delete">
           <v-icon small @click="deleteEntry(props.item, props.item.process_id)">delete</v-icon>
         </td>
@@ -93,6 +94,7 @@ export default {
         { text: "Set Time", sortable: false, value: "cook_time" },
         { text: "Read Interval", sortable: false, value: "read_int" },
         { text: "Time", value: "time_stamp" },
+        { text: "User", sortable: false, value: "user" },
         { text: "Actions", value: "name", sortable: false }
       ],
       data: []
@@ -100,7 +102,7 @@ export default {
   },
   created() {
     axios({
-      url: "http://10.3.141.1:8023/process",
+      url: "http://10.3.141.1:8023/process/admin",
       headers: { "x-access-token": localStorage.getItem("token") },
       method: "GET"
     })
@@ -118,7 +120,7 @@ export default {
     deleteEntry(item, id) {
       if (confirm("Are you sure you want to delete this item?")) {
         axios({
-          url: "http://10.3.141.1:8023/process/" + id,
+          url: "http://127.0.0.1:8023/process/" + id,
           headers: { "x-access-token": localStorage.getItem("token") },
           method: "DELETE"
         })

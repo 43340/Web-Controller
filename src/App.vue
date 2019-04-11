@@ -21,24 +21,86 @@
     <footer>
       Made with <span class="heart">❤</span> by heeho
     </footer>
-  </div> -->
+  </div>-->
   <v-app>
-    <v-toolbar
-      color="#42b983"
-      dark
-    >
+    <v-navigation-drawer app v-model="drawer" stateless value="true">
+      <v-list>
+        <v-list-tile @click="goToRoute('/')">
+          <v-list-tile-action>
+            <v-icon>home</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>Home</v-list-tile-title>
+        </v-list-tile>
+
+        <v-list-tile @click="goToRoute('/new')">
+          <v-list-tile-action>
+            <v-icon>add</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>New Process</v-list-tile-title>
+        </v-list-tile>
+
+        <v-list-tile @click="goToRoute('/current')">
+          <v-list-tile-action>
+            <v-icon>timer</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>Current</v-list-tile-title>
+        </v-list-tile>
+
+        <v-list-tile @click="goToRoute('/records')">
+          <v-list-tile-action>
+            <v-icon>folder</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>Records</v-list-tile-title>
+        </v-list-tile>
+
+        <v-list-group v-if="isLoggedIn && isAdmin" prepend-icon="account_circle" value="false">
+          <template v-slot:activator>
+            <v-list-tile>
+              <v-list-tile-title>Admin</v-list-tile-title>
+            </v-list-tile>
+          </template>
+
+          <v-list-tile @click="goToRoute('/register')">
+            <v-list-tile-action></v-list-tile-action>
+            <v-list-tile-title>Add User</v-list-tile-title>
+          </v-list-tile>
+
+          <v-list-tile @click="goToRoute('/users')">
+            <v-list-tile-action></v-list-tile-action>
+            <v-list-tile-title>View Users</v-list-tile-title>
+          </v-list-tile>
+
+          <v-list-tile @click="goToRoute('/allrecords')">
+            <v-list-tile-action></v-list-tile-action>
+            <v-list-tile-title>View Records</v-list-tile-title>
+          </v-list-tile>
+        </v-list-group>
+      </v-list>
+    </v-navigation-drawer>
+
+    <!-- 
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    -->
+
+    <v-toolbar app color="#42b983" dark>
+      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+
       <v-toolbar-title>Tray Dryer Controller</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat @click="goToRoute('/')"><span><router-link to="/">Home</router-link></span></v-btn>
-        <v-btn flat @click="goToRoute('/new')"><span><router-link to="/new">New</router-link></span></v-btn>
-        <v-btn flat @click="goToRoute('/current')"><span><router-link to="/current">Current</router-link></span></v-btn>
-        <v-btn flat @click="goToRoute('/records')"><span><router-link to="/records">Records</router-link></span></v-btn>
-        <v-btn v-if="!isLoggedIn" flat @click="goToRoute('/login')"><span><router-link to="/login">Login</router-link></span></v-btn>
-        <v-btn v-if="isLoggedIn && isAdmin" flat @click="goToRoute('/register')"><span><router-link to="/register">Add User</router-link></span></v-btn>
-        <v-btn v-if="isLoggedIn" flat @click="logout"><span><a>Logout</a></span></v-btn>
+        <v-btn v-if="!isLoggedIn" flat @click="goToRoute('/login')">
+          <span>
+            <router-link to="/login">Login</router-link>
+          </span>
+        </v-btn>
+        <v-btn v-if="isLoggedIn" flat @click="logout">
+          <span>
+            <a>Logout</a>
+          </span>
+        </v-btn>
       </v-toolbar-items>
     </v-toolbar>
+
     <v-content>
       <v-container fluid>
         <router-view></router-view>
@@ -54,9 +116,14 @@ export default {
       return this.$store.getters.isLoggedIn;
     },
     isAdmin: function() {
-      console.log(this.$store.getters.isAdmin)
+      console.log(this.$store.getters.isAdmin);
       return this.$store.getters.isAdmin;
     }
+  },
+  data() {
+    return {
+      drawer: null
+    };
   },
   methods: {
     logout: function() {
@@ -72,7 +139,7 @@ export default {
     this.$http.interceptors.response.use(undefined, function(err) {
       return new Promise(function(resolve, reject) {
         if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-          this.$store.dispatch('logout');
+          this.$store.dispatch("logout");
         }
         throw err;
       });
@@ -106,10 +173,6 @@ span a {
   text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
 a.router-link-exact-active {
   color: white;
 }
@@ -124,6 +187,6 @@ a {
 }
 
 .heart {
-  color:#e25555;
+  color: #e25555;
 }
 </style>

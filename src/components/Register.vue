@@ -23,40 +23,47 @@
         </form>
   </div>-->
   <div>
-  <h1>Register</h1>
-  <form class="register" @submit.prevent="register">
-    <v-container fill-height>
-      <v-layout column wrap>
-        <v-flex xs12 sm6>
-          <v-text-field v-model="name" :rules="[rules.required]" label="Name" required autofocus outline></v-text-field>
-        </v-flex>
+    <h1>Register</h1>
+    <form class="register" @submit.prevent="register">
+      <v-container fill-height>
+        <v-layout column wrap>
+          <v-flex xs12 sm6>
+            <v-text-field
+              v-model="name"
+              :rules="[rules.required]"
+              label="Name"
+              required
+              autofocus
+              outline
+            ></v-text-field>
+          </v-flex>
 
-        <v-flex xs12 sm6>
-          <v-text-field
-            v-model="password"
-            :rules="[rules.required]"
-            label="Password"
-            type="password"
-            required
-            outline
-          ></v-text-field>
-        </v-flex>
+          <v-flex xs12 sm6>
+            <v-text-field
+              v-model="password"
+              :rules="[rules.required]"
+              label="Password"
+              type="password"
+              required
+              outline
+            ></v-text-field>
+          </v-flex>
 
-        <v-flex xs12 sm6>
-          <v-text-field
-            v-model="password_confirmation"
-            :rules="[rules.required, rules.similar]"
-            label="Confirm Password"
-            type="password"
-            required
-            outline
-          ></v-text-field>
-        </v-flex>
-      </v-layout>
-    </v-container>
+          <v-flex xs12 sm6>
+            <v-text-field
+              v-model="password_confirmation"
+              :rules="[rules.required, rules.similar]"
+              label="Confirm Password"
+              type="password"
+              required
+              outline
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
+      </v-container>
 
-    <v-btn type="submit" color="success">Register</v-btn>
-  </form>
+      <v-btn type="submit" color="success">Register</v-btn>
+    </form>
   </div>
 </template>
 <script>
@@ -67,8 +74,8 @@ export default {
       password: "",
       password_confirmation: "",
       rules: {
-        required: value => !!value || 'Required.',
-        similar: value => !!value || 'Password does not match!'
+        required: value => !!value || "Required.",
+        similar: value => !!value || "Password does not match!"
       }
     };
   },
@@ -80,11 +87,16 @@ export default {
       };
       if (this.password === this.password_confirmation) {
         this.$store
-        .dispatch("register", data)
-        .then(() => this.$router.push("/"))
-        .catch(err => console.log(err));
+          .dispatch("register", data)
+          .then(() => this.$router.push("/"))
+          .catch(err => {
+            console.log(err);
+            if (err.response.status === 409) {
+              alert("User exist. Please use a different username");
+            }
+          });
       } else {
-          alert("Password does not match!")
+        alert("Password does not match!");
       }
     }
   }

@@ -1,64 +1,54 @@
 <template>
- <form
-    class="newProcess"
-    @submit.prevent="newProcess"
-  >
-		<v-container fill-height>
+  <form class="newProcess" @submit.prevent="newProcess">
+    <v-container fill-height>
       <v-layout column wrap>
-
         <v-flex xs12 sm6>
           <v-text-field
-						v-model="name"
+            v-model="name"
             :rules="[rules.required]"
-						label="Name"
-						required
+            label="Name"
+            required
             autofocus
-						outline
-    			></v-text-field>
+            outline
+          ></v-text-field>
         </v-flex>
 
         <v-flex xs12 sm6>
           <v-text-field
-						v-model.number="stemp"
+            v-model.number="stemp"
             :rules="[rules.numbers]"
-						label="Set Temperature"
+            label="Set Temperature"
             type="number"
-						required
-						outline
-    			></v-text-field>
+            required
+            outline
+          ></v-text-field>
         </v-flex>
 
         <v-flex xs12 sm6>
           <v-text-field
-						v-model.number="ctime"
+            v-model.number="ctime"
             :rules="[rules.numbers]"
-						label="Time"
+            label="Time"
             type="number"
-						required
-						outline
-    			></v-text-field>
+            required
+            outline
+          ></v-text-field>
         </v-flex>
 
         <v-flex xs12 sm6>
           <v-text-field
-						v-model.number="rinte"
+            v-model.number="rinte"
             :rules="[rules.numbers]"
-						label="Read Interval"
+            label="Read Interval"
             type="number"
-						required
-						outline
-    			></v-text-field>
+            required
+            outline
+          ></v-text-field>
         </v-flex>
-
       </v-layout>
     </v-container>
 
-    <v-btn
-      type="submit"
-      color="success"
-    >
-      Start
-    </v-btn>
+    <v-btn type="submit" color="success">Start</v-btn>
   </form>
 </template>
 
@@ -66,15 +56,15 @@
 export default {
   data() {
     return {
-      name: '',
-      stemp: '',
-      ctime: '',
-      rinte: '',
+      name: "",
+      stemp: "",
+      ctime: "",
+      rinte: "",
       rules: {
-        required: value => !!value || 'Required.',
+        required: value => !!value || "Required.",
         numbers: value => {
-          const pattern = /^([+-]?[1-9]\d*|0)$/
-          return pattern.test(value) || 'Required. Numbers only'
+          const pattern = /^([+-]?[1-9]\d*|0)$/;
+          return pattern.test(value) || "Required. Numbers only";
         }
       }
     };
@@ -92,19 +82,19 @@ export default {
         .then(() => this.$router.push("/current"))
         .catch(err => console.log(err));
     }
-  },
+  }
 };
 </script>
 
 <style>
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
 }
 </style>

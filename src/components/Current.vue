@@ -28,46 +28,57 @@
     <v-btn color="success" @click="startNew()">Start New</v-btn>
   </div>
   <div v-else>
-      <v-container fluid grid-list-lg>
-        <v-layout row wrap fill-height>
-          <v-flex xs12 sm4>
-            <v-card class="mx-auto" color="#26c6da" dark max-width="300">
-              <v-card-title>
-                <v-icon large left>mdi-twitter</v-icon>
-                <span class="title font-weight-light">Temperature</span>
-              </v-card-title>
+    <v-container fluid grid-list-lg>
+      <v-layout row wrap fill-height>
+        <v-dialog v-model="dialog" max-width="290">
+          <v-card>
+            <v-card-title class="headline">Confirm</v-card-title>
 
-              <v-card-text class="display-3 font-weight-bold">{{ temp }} °C</v-card-text>
-            </v-card>
-          </v-flex>
+            <v-card-text>Do you want to stop the current process?</v-card-text>
 
-          <v-flex xs12 sm4>
-            <v-card class="mx-auto" color="#26da86" dark max-width="300">
-              <v-card-title>
-                <v-icon large left>mdi-twitter</v-icon>
-                <span class="title font-weight-light">Humidity</span>
-              </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="green darken-1" flat="flat" @click="stopProcess()">Confirm</v-btn>
+              <v-btn color="green darken-1" flat="flat" @click="dialog = false">Cancel</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
 
-              <v-card-text class="display-3 font-weight-bold">{{ hum }} %</v-card-text>
-            </v-card>
-          </v-flex>
+        <v-flex xs12 sm4>
+          <v-card class="mx-auto" color="#26c6da" dark max-width="300">
+            <v-card-title>
+              <v-icon large left>mdi-twitter</v-icon>
+              <span class="title font-weight-light">Temperature</span>
+            </v-card-title>
 
-          <v-flex xs12 sm4>
-            <v-card class="mx-auto" color="#da2636" dark max-width="300">
-              <v-card-title>
-                <v-icon large left>mdi-twitter</v-icon>
-                <span class="title font-weight-light">ETA</span>
-              </v-card-title>
+            <v-card-text class="display-3 font-weight-bold">{{ temp }} °C</v-card-text>
+          </v-card>
+        </v-flex>
 
-              <v-card-text class="display-3 font-weight-bold">{{ timeLeft }}</v-card-text>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-      <v-btn 
-                color="error"
-                @click="stopProcess()"
-            >Stop</v-btn>
+        <v-flex xs12 sm4>
+          <v-card class="mx-auto" color="#26da86" dark max-width="300">
+            <v-card-title>
+              <v-icon large left>mdi-twitter</v-icon>
+              <span class="title font-weight-light">Humidity</span>
+            </v-card-title>
+
+            <v-card-text class="display-3 font-weight-bold">{{ hum }} %</v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs12 sm4>
+          <v-card class="mx-auto" color="#da2636" dark max-width="300">
+            <v-card-title>
+              <v-icon large left>mdi-twitter</v-icon>
+              <span class="title font-weight-light">ETA</span>
+            </v-card-title>
+
+            <v-card-text class="display-3 font-weight-bold">{{ timeLeft }}</v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+    <v-btn color="error" @click="dialog = true">Stop</v-btn>
   </div>
 </template>
 
@@ -82,11 +93,12 @@ export default {
       hum: "",
       timeLeft: "",
       socket: io("http://10.3.141.1:8023"),
-      stopped: ""
+      stopped: "",
+      dialog: false
     };
   },
   beforeDestroy() {
-    stopListening
+    stopListening;
   },
   mounted() {
     this.socket.on("some event", data => {
@@ -97,6 +109,7 @@ export default {
   },
   methods: {
     stopProcess() {
+      this.dialog = false;
       axios({
         url: "http://10.3.141.1:8023/stop",
         headers: { "x-access-token": localStorage.getItem("token") },

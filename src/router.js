@@ -1,109 +1,127 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import store from './store.js'
-import Home from './views/Home.vue'
-import About from './views/About.vue'
-import Login from './components/Login.vue'
-import Secure from './components/Secure.vue'
-import Register from './components/Register.vue'
-import NewProcess from './components/NewProcess.vue'
-import Records from './components/Records.vue'
-import Current from './components/Current.vue'
-import Detail from './components/Details.vue'
+import Vue from "vue";
+import Router from "vue-router";
+import store from "./store.js";
+import Home from "./views/Home.vue";
+import About from "./views/About.vue";
+import Login from "./components/Login.vue";
+import Secure from "./components/Secure.vue";
+import Register from "./components/Register.vue";
+import NewProcess from "./components/NewProcess.vue";
+import Records from "./components/Records.vue";
+import Current from "./components/Current.vue";
+import Detail from "./components/Details.vue";
+import Users from "./components/Users.vue";
+import AllRecords from "./components/AllRecords.vue";
 
-Vue.use(Router)
+Vue.use(Router);
 
 let router = new Router({
-  mode: 'history',
+  mode: "history",
   routes: [
     {
-      path: '/',
-      name: 'home',
+      path: "/",
+      name: "home",
       component: Home
     },
     {
-      path: '/login',
-      name: 'login',
+      path: "/login",
+      name: "login",
       component: Login,
-      meta: { 
+      meta: {
         loggedOut: true
       }
     },
     {
-      path: '/register',
-      name: 'register',
+      path: "/register",
+      name: "register",
       component: Register
     },
     {
-      path: '/secure',
-      name: 'secure',
+      path: "/secure",
+      name: "secure",
       component: Secure,
-      meta: { 
+      meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/new',
-      name: 'newprocess',
+      path: "/new",
+      name: "newprocess",
       component: NewProcess,
-      meta: { 
+      meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/records',
-      name: 'records',
+      path: "/records",
+      name: "records",
       component: Records,
-      meta: { 
+      meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/current',
-      name: 'current',
+      path: "/current",
+      name: "current",
       component: Current,
-      meta: { 
+      meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/detail/:id',
-      name: 'detail',
+      path: "/detail/:id",
+      name: "detail",
       component: Detail,
-      meta: { 
+      meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/about',
-      name: 'about',
+      path: "/users",
+      name: "users",
+      component: Users,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/allrecords",
+      name: "allrecords",
+      component: AllRecords,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/about",
+      name: "about",
       component: About
     }
   ]
-})
+});
 
 router.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
     if (store.getters.isLoggedIn) {
-      next()
-      return
+      next();
+      return;
     }
-    next('/login') 
+    next("/login");
   } else {
-    next() 
+    next();
   }
-})
+});
 
 router.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.loggedOut)) {
-    if (!(store.getters.isLoggedIn)) {
-      next()
-      return
+  if (to.matched.some(record => record.meta.loggedOut)) {
+    if (!store.getters.isLoggedIn) {
+      next();
+      return;
     }
-    next('/') 
+    next("/");
   } else {
-    next() 
+    next();
   }
-})
+});
 
-export default router
+export default router;
