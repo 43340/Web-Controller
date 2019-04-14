@@ -47,7 +47,11 @@
       </template>
 
       <template slot="items" slot-scope="props">
-        <td class="text-xs-left" @click="openDetails(props.item.process_id)">{{ props.item.name }}</td>
+        <td class="text-xs-left">
+          <a
+            :href="`http://10.3.141.1:8023/process/report/${props.item.process_id}`"
+          >{{ props.item.name }}</a>
+        </td>
         <td
           class="text-xs-right"
           @click="openDetails(props.item.process_id)"
@@ -62,8 +66,9 @@
         >{{ props.item.read_int }}</td>
         <td>{{ props.item.time_stamp }}</td>
         <td>{{ props.item.user_id }}</td>
-        <td class="delete">
-          <v-icon small @click="deleteEntry(props.item, props.item.process_id)">delete</v-icon>
+        <td class="actions">
+          <v-icon @click="openDetails(props.item.process_id)">search</v-icon>
+          <v-icon @click="deleteEntry(props.item, props.item.process_id)">delete</v-icon>
         </td>
       </template>
       <v-alert
