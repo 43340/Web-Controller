@@ -21,7 +21,7 @@
         </div>
   </div>-->
   <div
-    v-if="timeLeft === '0:00:00' || timeLeft === '-1 day, 23:59:59' || timeLeft === '' || stopped === 'true'"
+    v-if="timeLeft === '0:00:00' || timeLeft === '-1 day, 23:59:59' || timeLeft === '' || stopped === 'true' || stop === true"
   >
     {{stopListening()}}
     <h2>No running process click the start new button to start a new process</h2>
@@ -92,6 +92,7 @@ export default {
       temp: "",
       hum: "",
       timeLeft: "",
+      stop: true,
       socket: io("http://10.3.141.1:8023"),
       stopped: "",
       dialog: false
@@ -105,6 +106,7 @@ export default {
       this.temp = data.temp;
       this.hum = data.hum;
       this.timeLeft = data.timeleft;
+      this.stop = data.stop_run;
     });
   },
   methods: {
