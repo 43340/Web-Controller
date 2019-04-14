@@ -23,23 +23,45 @@
             outline
           ></v-text-field>
         </v-flex>
+        <v-layout row wrap justify-space-between>
+          <v-flex xs12 sm3>
+            <v-text-field
+              v-model.number="ctimeh"
+              :rules="[rules.numbers]"
+              label="Time (H)"
+              type="number"
+              required
+              outline
+            ></v-text-field>
+          </v-flex>
 
-        <v-flex xs12 sm6>
-          <v-text-field
-            v-model.number="ctime"
-            :rules="[rules.numbers]"
-            label="Time"
-            type="number"
-            required
-            outline
-          ></v-text-field>
-        </v-flex>
+          <v-flex xs12 sm3>
+            <v-text-field
+              v-model.number="ctimem"
+              :rules="[rules.numbers]"
+              label="Time (M)"
+              type="number"
+              required
+              outline
+            ></v-text-field>
+          </v-flex>
 
+          <v-flex xs12 sm3>
+            <v-text-field
+              v-model.number="ctimes"
+              :rules="[rules.numbers]"
+              label="Time (S)"
+              type="number"
+              required
+              outline
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
         <v-flex xs12 sm6>
           <v-text-field
             v-model.number="rinte"
             :rules="[rules.numbers]"
-            label="Read Interval"
+            label="Read Interval In Seconds"
             type="number"
             required
             outline
@@ -59,6 +81,9 @@ export default {
       name: "",
       stemp: "",
       ctime: "",
+      ctimeh: "",
+      ctimem: "",
+      ctimes: "",
       rinte: "",
       rules: {
         required: value => !!value || "Required.",
@@ -66,7 +91,8 @@ export default {
           const pattern = /^([+-]?[1-9]\d*|0)$/;
           return pattern.test(value) || "Required. Numbers only";
         }
-      }
+      },
+      dialog: false
     };
   },
   methods: {
@@ -74,7 +100,10 @@ export default {
       let data = {
         name: this.name,
         stemp: Number(this.stemp),
-        ctime: Number(this.ctime),
+        ctime:
+          Number(this.ctimeh) * 60 * 60 +
+          Number(this.ctimem) * 60 +
+          Number(this.ctimes),
         rinte: Number(this.rinte)
       };
       this.$store
