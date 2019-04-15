@@ -33,6 +33,35 @@
       <v-toolbar-title>Records</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+      <v-dialog v-model="dialog" persistent max-width="600px">
+        <template v-slot:activator="{ on }"></template>
+        <v-card>
+          <v-card-title>
+            <span class="headline">Enter Final Weight</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-text-field
+                    v-model.number="finalW"
+                    label="Final Weight (grams)"
+                    :rules="[rules.numbers]"
+                    type="number"
+                    required
+                    outline
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+            <v-btn color="blue darken-1" flat @click="saveWeight()">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-toolbar>
 
     <v-data-table
@@ -47,32 +76,23 @@
       </template>
 
       <template slot="items" slot-scope="props">
-        <td class="text-xs-left">
-          <a
-            :href="`http://10.3.141.1:8023/process/report/${props.item.process_id}`"
-          >{{ props.item.name }}</a>
-        </td>
+        <td class="text-xs-left">{{ props.item.name }}</td>
+        <td class="text-xs-right">{{ props.item.set_temp }}</td>
+        <td class="text-xs-right">{{ props.item.initial_w }}</td>
+        <td class="text-xs-right">{{ props.item.final_w }}</td>
         <td
           class="text-xs-right"
-          @click="openDetails(props.item.process_id)"
-        >{{ props.item.set_temp }}</td>
-        <td class="text-xs-right" @click="openDetails(props.item.init_w)">{{ props.item.initial_w }}</td>
-        <td class="text-xs-right" @click="openDetails(props.item.final_w)">{{ props.item.final_w }}</td>
-        <td
-          class="text-xs-right"
-          @click="openDetails(props.item.process_id)"
-        >{{ props.item.cook_time }}</td>
-        <td
-          class="text-xs-right"
-          @click="openDetails(props.item.process_id)"
-        >{{ props.item.read_int }}</td>
+        >{{ new Date(props.item.cook_time * 1000).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0] }}</td>
+        <td class="text-xs-right">{{ props.item.read_int }}</td>
         <td>{{ props.item.time_stamp }}</td>
         <td>{{ props.item.user_id }}</td>
         <td class="actions">
-          <v-icon @click="openDetails(props.item.process_id)">search</v-icon>
+          <v-icon @click="openDetails(props.item.process_id)">zoom_in</v-icon>
+          <v-icon @click="openDialog(props.item)">cloud_download</v-icon>
           <v-icon @click="deleteEntry(props.item, props.item.process_id)">delete</v-icon>
         </td>
       </template>
+
       <v-alert
         v-slot:no-results
         :value="true"
@@ -90,6 +110,16 @@ export default {
   data() {
     return {
       search: "",
+      finalW: "",
+      pid: "",
+      dialog: false,
+      rules: {
+        required: value => !!value || "Required.",
+        numbers: value => {
+          const pattern = /^([+-]?[1-9]\d*|0)$/;
+          return pattern.test(value) || "Required. Numbers only";
+        }
+      },
       headers: [
         {
           text: "Name",
@@ -103,7 +133,7 @@ export default {
         { text: "Set Time", sortable: false, value: "cook_time" },
         { text: "Read Interval", sortable: false, value: "read_int" },
         { text: "Time", value: "time_stamp" },
-        { text: "User", sortable: false, value: "user" },
+        { text: "User", sortable: false, value: "user_id" },
         { text: "Actions", value: "name", sortable: false }
       ],
       data: []
@@ -111,7 +141,7 @@ export default {
   },
   created() {
     axios({
-      url: "http://10.3.141.1:8023/process/admin",
+      url: "http://127.0.0.1:8023/process/admin",
       headers: { "x-access-token": localStorage.getItem("token") },
       method: "GET"
     })
@@ -126,6 +156,34 @@ export default {
       });
   },
   methods: {
+    openDialog(item) {
+      this.dialog = true;
+      this.pid = item.process_id;
+    },
+    saveWeight() {
+      console.log("woot");
+      axios({
+        url: "http://127.0.0.1:8023/process/" + this.pid + "/" + this.finalW,
+        headers: { "x-access-token": localStorage.getItem("token") },
+        method: "PUT"
+      })
+        .then(response => {
+          console.log(response.status);
+          if (response.status === 200) {
+            document.location.reload();
+            window.location.replace(
+              `http://127.0.0.1:8023/process/report/${this.pid}`
+            );
+
+            this.pid = "";
+            this.finalW = "0";
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      this.dialog = false;
+    },
     deleteEntry(item, id) {
       if (confirm("Are you sure you want to delete this item?")) {
         axios({
