@@ -23,6 +23,18 @@
             outline
           ></v-text-field>
         </v-flex>
+
+        <v-flex xs12 sm6>
+          <v-text-field
+            v-model.number="initw"
+            :rules="[rules.numbers]"
+            label="Initial Weight (grams)"
+            type="number"
+            required
+            outline
+          ></v-text-field>
+        </v-flex>
+
         <v-layout row wrap justify-space-between>
           <v-flex xs12 sm3>
             <v-text-field
@@ -61,7 +73,7 @@
           <v-text-field
             v-model.number="rinte"
             :rules="[rules.numbers]"
-            label="Read Interval In Seconds"
+            label="Read Interval (seconds)"
             type="number"
             required
             outline
@@ -80,6 +92,7 @@ export default {
     return {
       name: "",
       stemp: "",
+      initw: "",
       ctime: "",
       ctimeh: "",
       ctimem: "",
@@ -100,6 +113,7 @@ export default {
       let data = {
         name: this.name,
         stemp: Number(this.stemp),
+        initw: Number(this.initw),
         ctime:
           Number(this.ctimeh) * 60 * 60 +
           Number(this.ctimem) * 60 +

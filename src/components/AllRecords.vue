@@ -56,6 +56,8 @@
           class="text-xs-right"
           @click="openDetails(props.item.process_id)"
         >{{ props.item.set_temp }}</td>
+        <td class="text-xs-right" @click="openDetails(props.item.init_w)">{{ props.item.initial_w }}</td>
+        <td class="text-xs-right" @click="openDetails(props.item.final_w)">{{ props.item.final_w }}</td>
         <td
           class="text-xs-right"
           @click="openDetails(props.item.process_id)"
@@ -96,6 +98,8 @@ export default {
           value: "name"
         },
         { text: "Set Temperature", sortable: false, value: "set_temp" },
+        { text: "Initial Weight", sortable: false, value: "initial_w" },
+        { text: "Final Weight", sortable: false, value: "final_w" },
         { text: "Set Time", sortable: false, value: "cook_time" },
         { text: "Read Interval", sortable: false, value: "read_int" },
         { text: "Time", value: "time_stamp" },
