@@ -141,7 +141,7 @@ export default {
   },
   created() {
     axios({
-      url: "http://127.0.0.1:8023/process/admin",
+      url: "http://10.3.141.1:8023/process/admin",
       headers: { "x-access-token": localStorage.getItem("token") },
       method: "GET"
     })
@@ -163,7 +163,7 @@ export default {
     saveWeight() {
       console.log("woot");
       axios({
-        url: "http://127.0.0.1:8023/process/" + this.pid + "/" + this.finalW,
+        url: "http://10.3.141.1:8023/process/" + this.pid + "/" + this.finalW,
         headers: { "x-access-token": localStorage.getItem("token") },
         method: "PUT"
       })
@@ -172,7 +172,7 @@ export default {
           if (response.status === 200) {
             document.location.reload();
             window.location.replace(
-              `http://127.0.0.1:8023/process/report/${this.pid}`
+              `http://10.3.141.1:8023/process/report/${this.pid}`
             );
 
             this.pid = "";
@@ -187,7 +187,7 @@ export default {
     deleteEntry(item, id) {
       if (confirm("Are you sure you want to delete this item?")) {
         axios({
-          url: "http://127.0.0.1:8023/process/" + id,
+          url: "http://10.3.141.1:8023/process/" + id,
           headers: { "x-access-token": localStorage.getItem("token") },
           method: "DELETE"
         })
