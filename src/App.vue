@@ -56,7 +56,9 @@
         <v-list-group v-if="isLoggedIn && isAdmin" prepend-icon="account_circle" value="false">
           <template v-slot:activator>
             <v-list-tile>
-              <v-list-tile-title>Admin</v-list-tile-title>
+              <v-list-tile-content>
+                <v-list-tile-title>Admin</v-list-tile-title>
+              </v-list-tile-content>
             </v-list-tile>
           </template>
 

@@ -14,6 +14,7 @@
 
         <v-flex xs12 sm6>
           <v-text-field
+            @keyup.native.enter="login"
             v-model="password"
             type="password"
             label="Password"
@@ -26,7 +27,7 @@
       </v-layout>
     </v-container>
 
-    <v-btn color="success" @click="login">Login</v-btn>
+    <v-btn color="success" @click="login" @keyup.native.enter="login">Login</v-btn>
   </v-form>
 </template>
 
@@ -48,7 +49,7 @@ export default {
       this.$store
         .dispatch("login", { username, password })
         .then(() => this.$router.go("/"))
-        .catch(err => console.log(err));
+        .catch(err => alert("Invalid username or password"));
     }
   }
 };

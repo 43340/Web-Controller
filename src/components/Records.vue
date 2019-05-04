@@ -1,33 +1,4 @@
 <template>
-  <!-- <div>
-        <h1>Records</h1>
-        <div class="table-responsive">
-            <table class="table-hover" v-if="data">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Set Temperature</th>
-                        <th>Cook Time</th>
-                        <th>Read Interval</th>
-                        <th>Time Started</th>
-                        <th>Action</th>
-                    </tr>    
-                </thead>   
-                <tbody>
-                    <tr v-for="item, i in data">
-                        <td class="pname"><router-link :to="{ name: 'detail', params: { id: item.process_id } }">{{ item.name }}</router-link></td>
-                        <td class="stemp">{{ item.set_temp }}</td>
-                        <td class="ctime">{{ item.cook_time }}</td>
-                        <td class="rinte">{{ item.read_int }}</td>
-                        <td class="stime">{{ item.time_stamp }}</td>
-                        <td class="delete">
-                            <button v-on:click="deleteEntry(item.process_id, i)">x</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>    
-        </div>    
-  </div>-->
   <div>
     <v-toolbar flat color="white">
       <v-toolbar-title>Records</v-toolbar-title>
@@ -78,8 +49,6 @@
       <template slot="items" slot-scope="props">
         <td class="text-xs-left">{{ props.item.name }}</td>
         <td class="text-xs-right">{{ props.item.set_temp }}</td>
-        <td class="text-xs-right">{{ props.item.initial_w }}</td>
-        <td class="text-xs-right">{{ props.item.final_w }}</td>
         <td
           class="text-xs-right"
         >{{ new Date(props.item.cook_time * 1000).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0] }}</td>
@@ -126,8 +95,6 @@ export default {
           value: "name"
         },
         { text: "Set Temperature", sortable: false, value: "set_temp" },
-        { text: "Initial Weight", sortable: false, value: "initial_w" },
-        { text: "Final Weight", sortable: false, value: "final_w" },
         { text: "Set Time (HH:mm:ss)", sortable: false, value: "cook_time" },
         { text: "Read Interval", sortable: false, value: "read_int" },
         { text: "Time", value: "time_stamp" },
