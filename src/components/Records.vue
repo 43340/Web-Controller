@@ -4,35 +4,6 @@
       <v-toolbar-title>Records</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
-      <v-dialog v-model="dialog" persistent max-width="600px">
-        <template v-slot:activator="{ on }"></template>
-        <v-card>
-          <v-card-title>
-            <span class="headline">Enter Final Weight</span>
-          </v-card-title>
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <v-text-field
-                    v-model.number="finalW"
-                    label="Final Weight (grams)"
-                    :rules="[rules.numbers]"
-                    type="number"
-                    required
-                    outline
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-            <v-btn color="blue darken-1" flat @click="saveWeight()">Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-toolbar>
 
     <v-data-table
@@ -56,7 +27,9 @@
         <td>{{ props.item.time_stamp }}</td>
         <td class="actions">
           <v-icon @click="openDetails(props.item.process_id)">zoom_in</v-icon>
-          <v-icon @click="openDialog(props.item)">cloud_download</v-icon>
+          <a :href="`http://10.3.141.1:8023/download/report/${props.item.process_id}`">
+            <v-icon>cloud_download</v-icon>
+          </a>
           <v-icon @click="deleteEntry(props.item, props.item.process_id)">delete</v-icon>
         </td>
       </template>
